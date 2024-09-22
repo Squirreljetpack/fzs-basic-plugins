@@ -5,3 +5,15 @@ You may wish to look over each file to customize it to your liking (i.e. Choose 
 - Requires fzf
   - Window selector on mac requires yabai
   - bat is used for display. (You may wish to replace it with cat if it's not available).
+  - You may want to set FZF_DEFAULT_OPTS to make better use of the file/directory selection, ([See](https://github.com/Squirreljetpack/fzs#Usage tips)).
+
+# Previews
+
+##### dir
+
+<img src=".README.assets/directory.png" alt="directory" style="zoom: 50%;" /> 
+
+##### app
+
+<img src=".README.assets/app.png" alt="app" style="zoom:50%;" />
+
