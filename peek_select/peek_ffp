@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+declare -A dir_map=(["desktop"]="$HOME/Desktop", ["documents"]="$HOME/Documents") # Declare your quick peek directories here
+
+selected_key="$(print -l ${(k)dir_map[@]} | fzf --bind 'one:accept')"
+
+if [[ -n "$selected_key" ]]; then
+    print -n "$selected_key: "
+    find.searchin ${(@s/:/)dir_map[$selected_key]}
+else
+    echo "No selection made."
+fi

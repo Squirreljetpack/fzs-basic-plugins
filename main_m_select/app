@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+if [[ "$OSTYPE" == linux* ]]; then
+
+  selected=$(cat $FZS_DATA_DIR/xdg_apps | fzf \
+    --delimiter '\t' \
+    --preview 'bat {3}' \
+    --layout=reverse \
+    --height=70% \
+    --bind 'one:become(echo {2})' \
+    --bind 'enter:become(echo {2})' \
+    --with-nth '1' \
+    --query "'" \
+    --bind "zero:transform-query(printf \"%s\" \"\$FZF_QUERY\" | sed \"s/^'//\")")
+  if [[ -n "$selected" ]]; then
+    xdg-open "${selected%%\%*}" # or use pueue to run in background without polluting your terminal
+  else
+    exit 1
+  fi
+elif [[ "$OSTYPE" == darwin* ]]; then
+  altbstr='alt-b:execute(osascript -e "id of app \"$(echo {-1})\"" | '
+  altbstr+="$CLIPcmd )" # set your clipboard command here
+  altbstr+='+preview(osascript -e "id of app \"$(echo {-1})\"")'
+  fd --type d --extension app --search-path ~/Applications --search-path /Applications --search-path /System/Applications --search-path /System/Volumes/Preboot/Cryptexes/App/System/Applications -E 'Contents' | awk -F'.' '{NF--; OFS="."; print $0}' | sort | fzf \
+    --delimiter '/' \
+    --with-nth '-1' \
+    --preview 'echo {}' \
+    --layout=reverse \
+    --height=70% \
+    --bind 'one:become(open -a {-1})' \
+    --bind 'enter:become(open -a {-1})' \
+    --bind 'ctrl-r:become(open -R {-1})' \
+    --bind 'ctrl-n:become(open -n {-1})' \
+    --bind 'ctrl-b:become(open -b {-1})' \
+    --bind "$altbstr" \
+    --header 'ctrl-r:Reveal ctrl-n:New ctrl-b:Background alt-b:copy-bundle-id' \
+    --query "'" \
+    --bind "zero:transform-query(printf \"%s\" \"\$FZF_QUERY\" | sed \"s/^'//\")"
+fi
+# strange place for safari to reside in

@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+cd "$HOME/.config"
+{ fd -H ".(json|toml|gitconfig)" --max-depth 1 ~ && fd -t f -H "\\.*(config
+toml|kdl)|^[a-zA-Z_-]*\.json" --exclude "node_modules"; } | grep -iE -v "/[0-9\._\-]+/|Code/User/.*/|node" | fzf --preview-window="up,60%,border-bottom,+{2}+3/3,~3,nohidden" --preview "bat -p --color=always --terminal-width $FZF_PREVIEW_COLUMNS {1}"
